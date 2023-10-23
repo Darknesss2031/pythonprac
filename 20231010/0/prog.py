@@ -49,4 +49,4 @@ def scale(a, b, A, B, x):
 # print("\n".join(["".join(s) for s in scr]))
 
 for i in range (12, 24):
-    print(f"{bin(i):>7} = {hex(i)}")
+    print(f"{bin(i):<7} = {hex(i)}")
