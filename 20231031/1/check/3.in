@@ -1,0 +1,11 @@
+a, b = Omnibus(), Omnibus()
+del a.random, b.y, a.t
+a.i = a.j = a.k = True
+b.j = b.k = b.n = False
+print(a.i, a.j, a.k, b.j, b.k, b.n)
+del a.k, b.n
+print(a.i, a.j, b.j, b.k)
+del a.k, b.y
+print(a.i, a.j, b.j, b.k)
+a.k = b.i = b.y = 777
+print(a.i, a.j, a.k, b.j, b.k)
