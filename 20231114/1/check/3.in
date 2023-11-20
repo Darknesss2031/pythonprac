@@ -1,0 +1,15 @@
+@objcount
+class C:
+    def __init__(self):
+        self.a = 5
+        self.b = 6
+
+c, d = C(), C()
+print(c.a, c.b, C.counter)
+del c
+d = C()
+print(C.counter)
+c = d
+print(C.counter)
+c = C()
+print(C.counter)

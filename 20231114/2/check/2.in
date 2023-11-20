@@ -1,0 +1,12 @@
+class A:
+    a = Num()
+
+f = A()
+g = A()
+f.a = g.a = 4
+f.b = g.a = 'asdfqwert'
+print(f.a, f.b, g.a)
+f.a = g.a
+print(f.a, f.b, g.a)
+f.a += g.a
+print(f.a, f.b, g.a)
