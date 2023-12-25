@@ -1,0 +1,63 @@
+def distance(dot1, dot2):
+    return ((dot2[0] - dot1[0]) ** 2 + (dot2[1] - dot1[1]) ** 2) ** 0.5
+
+def dotTriangle(dot, dots):
+    a = (dots[0][0]-dot[0])*(dots[1][1]-dots[0][1])-(dots[1][0]-dots[0][0])*(dots[0][1]-dot[1])
+    b = (dots[1][0]-dot[0])*(dots[2][1]-dots[1][1])-(dots[2][0]-dots[1][0])*(dots[1][1]-dot[1])
+    c = (dots[2][0]-dot[0])*(dots[0][1]-dots[2][1])-(dots[0][0]-dots[2][0])*(dots[2][1]-dot[1])
+    if a == 0 and dot[0] > min(dots[0][0], dots[1][0]) and dot[0] < max(dots[0][0], dots[1][0]) and dot[1] > min(dots[0][1], dots[1][1]) and dot[1] < max(dots[0][1], dots[1][1]):
+        return True
+    elif b == 0 and dot[0] > min(dots[2][0], dots[1][0]) and dot[0] < max(dots[2][0], dots[1][0]) and dot[1] > min(dots[2][1], dots[1][1]) and dot[1] < max(dots[2][1], dots[1][1]):
+        return True
+    elif c == 0 and dot[0] > min(dots[0][0], dots[2][0]) and dot[0] < max(dots[0][0], dots[2][0]) and dot[1] > min(dots[0][1], dots[2][1]) and dot[1] < max(dots[0][1], dots[2][1]):
+        return True
+    elif (a > 0 and b > 0 and c > 0) or (a < 0 and b < 0 and c < 0):
+        return True
+    else:
+        return False
+
+class Triangle(metaclass=dump):
+    def __init__(self, dot1, dot2, dot3):
+        self.dots = [(dot1[0], dot1[1]), (dot2[0], dot2[1]), (dot3[0], dot3[1])]
+        self.sides = [distance(self.dots[0], self.dots[1]), distance(self.dots[2], self.dots[1]), distance(self.dots[0], self.dots[2])]
+
+    def __abs__(self):
+        if self.sides[0] < self.sides[1] + self.sides[2] and self.sides[1] < self.sides[0] + self.sides[2] and self.sides[2] < self.sides[0] + self.sides[1] and min(self.sides) > 0:
+            return abs((self.dots[0][0] - self.dots[2][0]) * (self.dots[1][1] - self.dots[2][1]) - (self.dots[0][1] - self.dots[2][1]) * (self.dots[1][0] - self.dots[2][0])) / 2
+        else:
+            return 0
+
+    def __bool__(self):
+        return abs(self) != 0
+
+    def __lt__(self, other):
+        return abs(self) < abs(other)
+
+    def __contains__(self, item):
+        if item:
+            if dotTriangle(item.dots[0], self.dots) and dotTriangle(item.dots[1], self.dots) and dotTriangle(
+                    item.dots[2], self.dots):
+                return True
+            else:
+                return False
+        else:
+            return True
+
+    def __and__(self, other):
+        if self and other:
+            if dotTriangle(self.dots[0], other.dots) or dotTriangle(self.dots[1], other.dots) or dotTriangle(
+                    self.dots[2], other.dots) or dotTriangle(other.dots[0], self.dots) or dotTriangle(other.dots[1], self.dots) or dotTriangle(other.dots[2], self.dots):
+                return True
+            else:
+                return False
+        else:
+            return False
+
+r = Triangle((4, 2), (1, 3), (2, 4))
+s = Triangle((1, 1), (3, 1), (2, 2))
+t = Triangle((0, 0), (2, 3), (4, 0))
+o = Triangle((1, 1), (2, 2), (3, 3))
+print(*(f"{n}({bool(x)}):{round(abs(x), 3)}" for n, x in zip("rsto", (r, s, t, o))))
+print(f"{s < t=}, {o < t=}, {r < t=}, {r < s=}")
+print(f"{s in t=}, {o in t=}, {r in t=}")
+print(f"{r & t=}, {t & r=}, {s & r=}, {o & t=}")
